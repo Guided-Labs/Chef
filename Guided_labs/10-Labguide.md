@@ -36,7 +36,7 @@ When managing infrastructure across environments, manual configurations can lead
 - **Jenkins or another CI/CD tool**: To set up automated testing and deployment.
 - **Git**: For version control and Chef cookbook management.
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - **Chef Server**: 4 GB RAM, 2 CPU cores minimum.
 - **Workstation**: 4 GB RAM, 2 CPU cores minimum.
 - **CI/CD Server** (e.g., Jenkins): 8 GB RAM, 4 CPU cores recommended.
@@ -296,7 +296,7 @@ To fix the `knife not found` error, you need to rename your `config.rb` file to 
      ```
 
 ## **References**
-
+---
 1. **Chef Official Documentation**: [https://docs.chef.io/](https://docs.chef.io/)  
 2. **Jenkins Official Documentation**: [https://www.jenkins.io/](https://www.jenkins.io/)  
 3. **Docker Documentation**: [https://docs.docker.com/](https://docs.docker.com/)  

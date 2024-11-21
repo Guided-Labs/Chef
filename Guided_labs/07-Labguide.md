@@ -29,7 +29,7 @@ Creating cookbooks from scratch for every new application or configuration can b
 - **Chef Workstation**: To download, modify, and apply cookbooks.
 - **Chef Server** or **Chef Client**: To upload and apply cookbooks in your environment.
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - **Chef Workstation**: 2 GB RAM, 2 CPU cores
 
 ## **Implementation Steps**
@@ -170,10 +170,10 @@ suites:
 ---
 
 ## **References**
-
+---
 1. **Chef Supermarket Documentation**: [https://supermarket.chef.io](https://supermarket.chef.io)  
 2. **Test Kitchen Documentation**: [https://kitchen.ci/](https://kitchen.ci/)  
 3. **Chef InSpec Documentation**: [https://www.chef.io/products/chef-inspec](https://www.chef.io/products/chef-inspec)  
 4. **Chef Official Documentation**: [https://docs.chef.io/](https://docs.chef.io/)  
 
---- 
+

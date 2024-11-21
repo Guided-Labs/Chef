@@ -29,7 +29,7 @@ Testing Chef cookbooks in real environments can be time-consuming and error-pron
 - **Chef Workstation**: To create, test, and manage cookbooks.
 - **Virtualization Software**: Vagrant or Docker for local testing (recommended).
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - **Chef Workstation**: 2 GB RAM, 2 CPU cores
 
 ## **Implementation Steps**
@@ -142,7 +142,7 @@ Testing Chef cookbooks in real environments can be time-consuming and error-pron
    - This command runs the InSpec tests you wrote in `default_test.rb`. If successful, you’ll see output indicating that the tests passed.
 
 ## **References**
-
+---
 - Chef Test Kitchen Documentation: [https://docs.chef.io/test_kitchen/](https://docs.chef.io/test_kitchen/)
 - Chef InSpec Documentation: [https://docs.chef.io/inspec/](https://docs.chef.io/inspec/)
 - Testing Infrastructure with Chef: [https://learn.chef.io/](https://learn.chef.io/)

@@ -30,7 +30,7 @@ Setting up and configuring web servers manually on each server can be time-consu
 - **Chef Server**: To host and distribute Chef configurations.
 - **Chef Node**: A target machine where Apache will be installed and configured.
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - **Chef Workstation**: 2 GB RAM, 2 CPU cores
 - **Chef Server**: 4 GB RAM, 2 CPU cores
 - **Chef Node**: 2 GB RAM, 1 CPU core (can be a cloud VM or a local machine)
@@ -161,7 +161,7 @@ Setting up and configuring web servers manually on each server can be time-consu
      ![webpage](images/WS%20webpage.png)
 
 ## **References**
-
+---
 - Chef Documentation: [https://docs.chef.io/](https://docs.chef.io/)
 - Managing Cookbooks with Chef: [https://docs.chef.io/cookbooks/](https://docs.chef.io/cookbooks/)
 - Configuring a Web Server with Chef: [https://learn.chef.io/](https://learn.chef.io/)

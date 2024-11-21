@@ -29,7 +29,7 @@ Manually managing cloud resources can lead to inconsistencies and errors. Automa
 - **Cloud SDKs/CLI**: Required for the cloud provider being used (e.g., AWS CLI for AWS).
 - **Chef Plugins**: Chef-Provisioning and cloud-specific drivers.
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - A **Chef Workstation** with internet access to connect to the cloud provider API and provision resources.
 
 ## **Implementation Steps**
@@ -120,7 +120,7 @@ In this example:
    Use Chef recipes to install software, configure settings, and deploy applications on the provisioned resources.
 
 ## **References**
-
+---
 - [Chef Documentation](https://docs.chef.io/)
 - [Chef-Provisioning GitHub](https://github.com/chef/chef-provisioning)
 - [AWS CLI Documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)

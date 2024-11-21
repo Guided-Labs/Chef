@@ -26,7 +26,7 @@ Storing sensitive data directly in recipes or roles can expose it to unauthorize
 - **Chef Workstation**: To create and manage data bags.
 - **Chef Server**: To store and secure data bags.
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - Minimum 2 GB RAM and 2 CPU cores for the Chef Workstation.
 - Chef Server with 4 GB RAM and 2 CPU cores.
 
@@ -158,7 +158,7 @@ For highly sensitive information, encrypting data bags adds another layer of sec
 ---
 
 ## **References**
-
+---
 - Chef Documentation: [https://docs.chef.io/](https://docs.chef.io/)
 - Chef Data Bags: [https://docs.chef.io/data_bags/](https://docs.chef.io/data_bags/)
 - Encrypting Data Bags: [https://docs.chef.io/data_bags/#encrypt-a-data-bag](https://docs.chef.io/data_bags/#encrypt-a-data-bag)

@@ -27,7 +27,7 @@ When managing multiple configurations or systems, it becomes difficult to mainta
 - **Chef Workstation**: To create and test the custom resource and recipe.
 - **Chef Infra Client**: To apply the configuration.
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - A **Chef Workstation** with internet access for downloading dependencies.
 
 ## **Implementation Steps**
@@ -150,6 +150,6 @@ Once the custom resource is defined, you can use it in any recipe in the same co
    ![ResourcesStatus1](images/ResurcesStatus1.png)
 
 ## **References**
-
+---
 - [Chef Custom Resources Documentation](https://docs.chef.io/custom_resources/)
 - [Chef Properties and Attributes](https://docs.chef.io/resources/)

@@ -26,7 +26,7 @@ When managing servers across different environments, it’s essential to ensure 
 - **Chef Server**: To store and manage roles and node configurations.
 - **Chef Node(s)**: Target machines where roles will be assigned.
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - **Chef Workstation**: 2 GB RAM, 2 CPU cores
 - **Chef Server**: 4 GB RAM, 2 CPU cores
 - **Chef Node(s)**: 2 GB RAM, 1 CPU core
@@ -141,7 +141,7 @@ When managing servers across different environments, it’s essential to ensure 
    - The node will configure itself according to the `webserver_dev` role and the `development` environment settings, including using port `8080` as defined.
 
 ## **References**
-
+---
 - Chef Documentation: [https://docs.chef.io/](https://docs.chef.io/)
 - Managing Roles with Chef: [https://docs.chef.io/roles/](https://docs.chef.io/roles/)
 - Environments in Chef: [https://docs.chef.io/environments/](https://docs.chef.io/environments/)

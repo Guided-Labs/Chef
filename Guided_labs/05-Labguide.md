@@ -1,4 +1,4 @@
-# Creating and Using Chef Cookbooks for Complex Configurations
+# **Creating and Using Chef Cookbooks for Complex Configurations**
 
 ## **Table of Contents**
 ---
@@ -30,7 +30,7 @@ When managing complex environments with multiple configuration requirements, itâ
 - **Chef Server**: To store and distribute cookbooks to nodes.
 - **Chef Node**: To apply and execute cookbooks.
 
-## **Hardware Requirement**
+### **Hardware Requirement**
 - **Chef Workstation**: 2 GB RAM, 2 CPU cores
 - **Chef Server**: 4 GB RAM, 2 CPU cores
 - **Chef Node(s)**: 2 GB RAM, 1 CPU core
@@ -148,7 +148,7 @@ When managing complex environments with multiple configuration requirements, itâ
    ![verifyMyweb](images/Verify%20myweb.png)
 
 ## **References**
-
+---
 - Chef Documentation: [https://docs.chef.io/](https://docs.chef.io/)
 - Creating Chef Cookbooks: [https://docs.chef.io/cookbooks/](https://docs.chef.io/cookbooks/)
 - Using Attributes in Chef: [https://docs.chef.io/attributes/](https://docs.chef.io/attributes/)

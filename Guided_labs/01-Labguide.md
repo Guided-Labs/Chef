@@ -309,7 +309,7 @@ knife bootstrap 172.19.4.155 -U vagrant -P vagrant --sudo -N chef-node
   ![VerifyNode](images/VerifyNode.png)
 
 ## **References**
-
+---
 - Official Chef Documentation: [https://docs.chef.io/](https://docs.chef.io/)
 - Setting Up Chef Server: [https://docs.chef.io/server/](https://docs.chef.io/server/)
 - Working with Chef Workstation: [https://docs.chef.io/workstation/](https://docs.chef.io/workstation/)
