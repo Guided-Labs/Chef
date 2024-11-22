@@ -29,6 +29,8 @@ When managing infrastructure across environments, manual configurations can lead
 
 ## **Prerequisites**
 ---
+Completion of all previous lab guides (up to Lab Guide-09) is required before proceeding with Lab Guide-10.
+
 ### **Software Required**
 - **Chef Workstation**: To write and test Chef configurations.
 - **Chef Server**: For managing node configurations.

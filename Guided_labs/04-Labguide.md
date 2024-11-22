@@ -22,6 +22,8 @@ Storing sensitive data directly in recipes or roles can expose it to unauthorize
 
 ## **Prerequisites**
 ---
+Completion of all previous lab guides (up to Lab Guide-03) is required before proceeding with Lab Guide-04.
+
 ### **Software Required**
 - **Chef Workstation**: To create and manage data bags.
 - **Chef Server**: To store and secure data bags.
@@ -37,19 +39,25 @@ Storing sensitive data directly in recipes or roles can expose it to unauthorize
 Data bags are containers for items, and each item holds a specific set of data.
 
 1. **Navigate to the Data Bags Directory**:
+
    - cd to chef-repo and create a folder as shown below
+
      ```bash
-     mkdir data_bag\credentials
+     mkdir databags\credentials
      ```
+
      ![DataFolder](images/DatabagFolder.png)
 
    - Go to your Chef repository:
+
      ```bash
-     cd ~/chef-repo/data_bags
+     cd databags
      ```
 
 2. **Create a Data Bag**:
+
    - Use `knife` to create a data bag named `credentials`:
+
      ```bash
      knife data bag create credentials
      ```
@@ -63,8 +71,15 @@ Data bags are containers for items, and each item holds a specific set of data.
 Each item within a data bag is a JSON file containing key-value pairs.
 
 1. **Create a Data Bag Item File**:
-   - cd to /chef-repo/data_bags/credentials
-   - Create a JSON file for a secret using VScode or any other IDE, for example, `web_server.json`:
+
+   - cd to the `credentials` data bag directory:
+
+     ```bash
+     cd credentials
+     ```
+
+   - Create a JSON file for a secret using VScode or any other IDE, e.g., `web_server.json` using command `code web_server.json`:
+
      ```json
      {
        "id": "webserver",
@@ -76,7 +91,9 @@ Each item within a data bag is a JSON file containing key-value pairs.
      ![web_server_json](images/web_server_json.png)
 
 2. **Upload the Data Bag Item**:
-   - Upload the item to the Chef Server:
+
+   - Upload the item to the Chef Server using `knife` from the `credentials` data bag directory:
+
      ```bash
      knife data bag from file credentials web_server.json
      ```
@@ -88,11 +105,30 @@ Each item within a data bag is a JSON file containing key-value pairs.
 ### **Step-3: Access Data Bag Items in a Recipe**
 
 1. **Retrieve Data Bag Data in a Recipe**:  
-   - Use the `data_bag_item` method in your recipe to access stored values.  
-   - For example, in a `user_management` recipe:  
-     ```ruby
-     secrets = data_bag_item('credentials', 'web_server')
 
+  - Use the `data_bag_item` method in your recipe to access stored values.
+
+  - Here is an example of how you can configure your recipes to access the `web_server` data bag item:
+
+  - In your cookbook's recipe file, you can retrieve the `username` and `password` from the `web_server` data bag item:
+
+     ```ruby
+     package 'apache2' do
+       action :install
+     end
+     
+     service 'apache2' do
+       action [:enable, :start]
+     end
+     
+     file '/var/www/html/index.html' do
+       content '<h1>Welcome to Chef-managed Web Server!</h1>'
+       action :create
+     end
+     
+     # Add the data bag item
+     secrets = data_bag_item('credentials', 'web_server')
+     
      user secrets['username'] do
        password secrets['password']
        action :create
@@ -100,15 +136,33 @@ Each item within a data bag is a JSON file containing key-value pairs.
      ```
 
    - Here:
-     - `secrets` retrieves the `username` and `password` for user creation from the `user_credentials` data bag item.
+     - `secrets` retrieves the `username` and `password` for user creation from the `credentials` data bag item.
      - The `user` resource uses these credentials to create the user on the system.
 
+    - This way, you can securely store and access sensitive data in your Chef recipes.
+
+2. **Update the Node's run-list with the recipe**
+
+    ```bash
+    knife node run_list add <node_name> 'recipe[webserver::DEV]'
+    ```
+
+    ![DatabagRecipe](images/updatenode.png)
+
+3. **Run the Recipe on the Node**
+
+    ```bash
+    chef-client
+    ```
+
+    ![DatabagRecipe](images/chefclient.png)
 
 ### **Step-4: Encrypt Sensitive Data in Data Bags**
 
 For highly sensitive information, encrypting data bags adds another layer of security.
 
 1. **Create a Secret Key**:  
+
    - Generate an encryption key file on Windows powershell:  
 
      ```powershell
@@ -119,30 +173,52 @@ For highly sensitive information, encrypting data bags adds another layer of sec
 
      ![Encryption](images/Encryption.png)
 
-2. **Encrypt the Data Bag Item**:  
-   - Encrypt the `db_password` data bag item:  
+2. **Encrypt the Data Bag Item**: 
+
+   - Encrypt the `db_password` data bag item: 
+
      ```bash
-     knife data bag from file secrets db_password.json --secret-file C:\Users\Administrator\Downloads\chef-starter\chef-repo\encrypted_data_bag_secret
+     knife data bag from file credentials web_server.json --secret-file C:\Users\Administrator\Downloads\chef-starter\chef-repo\encrypted_data_bag_secret
      ```
 
      ![Encrypt_Databag](images/Encrypt_Databag.png)
 
 3. **View Encrypted Data Bag**:  
+
    - If you try to view the encrypted data without the secret file, it will remain encrypted:  
+
      ```bash
-     knife data bag show credentials web_server
+     knife data bag show credentials webserver
      ```
+
      ![NoEncryp](images/NoEncryp.png)
 
    - To view the decrypted data, specify the secret file:  
+
      ```bash
-     knife data bag show credentials web_server --secret-file C:\Users\Administrator\Downloads\chef-starter\chef-repo\encrypted_data_bag_secret
+     knife data bag show credentials webserver --secret-file C:\Users\Administrator\Downloads\chef-starter\chef-repo\encrypted_data_bag_secret
      ```
+
      ![Encryp](images/Encryp.png)
 
 4. **Access Encrypted Data Bag in Recipes**:  
+
    - Specify the secret key file to access encrypted data:  
+
      ```ruby
+     package 'apache2' do
+       action :install
+     end
+     
+     service 'apache2' do
+       action [:enable, :start]
+     end
+     
+     file '/var/www/html/index.html' do
+       content '<h1>Welcome to Chef-managed Web Server!</h1>'
+       action :create
+     end
+
      db_creds = data_bag_item('secrets', 'db_password', IO.read('C:/Users/Administrator/Downloads/chef-starter/chef-repo/encrypted_data_bag_secret'))
      
      user db_creds['username'] do
@@ -150,9 +226,28 @@ For highly sensitive information, encrypting data bags adds another layer of sec
        action :create
      end
      ```
+
       ![Databag_recipe](images/Databag_recipe.png)
 
+   - Update the node's run-list with key file:
+
+     ```bash
+     knife node run_list add <node_name> 'recipe[webserver::DEV]'
+     ```
+
+      ![DatabagRecipe](images/updatednode.png)
+
+   - Run the recipe on the node:
+
+      ```bash
+      chef-client
+      ```
+  
+      ![DatabagRecipe](images/chefclient1.png)   
+
+
 5. **Distribute the Secret Key Securely**:
+
    - Ensure the key file is accessible only to authorized users or scripts running Chef recipes.
 
 ---

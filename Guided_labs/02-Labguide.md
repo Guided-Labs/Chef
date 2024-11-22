@@ -25,6 +25,8 @@ Setting up and configuring web servers manually on each server can be time-consu
 
 ## **Prerequisites**
 ---
+Completion of all previous lab guides (up to Lab Guide-01) is required before proceeding with Lab Guide-02.
+
 ### **Software Required**
 - **Chef Workstation**: To write and test Chef recipes.
 - **Chef Server**: To host and distribute Chef configurations.
@@ -41,13 +43,15 @@ Setting up and configuring web servers manually on each server can be time-consu
 ### **Step-1: Create a Chef Recipe**
 
 1. **Navigate to the Cookbooks Directory**:
-   - From your Chef Workstation terminal, navigate to the `chef-repo/cookbooks` directory:
+   - From your Chef Workstation terminal, navigate to the `chef-starter/chef-repo/cookbooks` directory:
      ```bash
      cd ~/chef-repo/cookbooks
      ```
 
 2. **Generate a New Cookbook**:
+
    - Create a new cookbook called `webserver`:
+
      ```bash
      chef generate cookbook webserver
      ```
@@ -55,7 +59,9 @@ Setting up and configuring web servers manually on each server can be time-consu
     ![webserver](images/webserver.png)
 
 3. **Navigate to the Cookbook Directory**:
+
    - Move into the `webserver` directory:
+
      ```bash
      cd webserver
      ```
@@ -65,14 +71,17 @@ Setting up and configuring web servers manually on each server can be time-consu
 ### **Step-2: Write the Recipe to Install and Configure Apache**
 
 1. **Edit the Default Recipe**:
-   - Open the `recipes/default.rb` file for editing:
+
+   - cd into the `recipes` directory and open the `default.rb` file in a text editor:
+
      ```bash
-     notepad recipes/default.rb
+     notepad default.rb
      ```
 
      ![NotepadWebserver](images/Notepad%20webserver.png)
 
 2. **Add Code to Install Apache and Configure the Home Page**:
+
    - Write a basic recipe to install and start Apache, and serve a simple webpage:
 
      ```ruby
@@ -104,13 +113,16 @@ Setting up and configuring web servers manually on each server can be time-consu
 ### **Step-3: Upload the Recipe to Chef Server**
 
 1. **Upload the Cookbook to Chef Server**:
-   - From the `chef-repo` directory, use `knife` to upload the cookbook:
+   - From the `chef-repo\cookbooks` directory, run the following command to upload the `webserver` cookbook to the Chef Server:
+
      ```bash
      knife cookbook upload webserver
      ```
 
 2. **Verify the Cookbook is Uploaded**:
+
    - Check on Chef Server if the `webserver` cookbook appears in the list:
+
      ```bash
      knife cookbook list
      ```
@@ -120,16 +132,21 @@ Setting up and configuring web servers manually on each server can be time-consu
 ### **Step-4: Run the Recipe on Chef Node**
 
 1. **Assign the Recipe to the Node**:
+
    - Run the following command to add the `webserver` recipe to the node’s run-list:
+
      ```bash
      knife node run_list add <node_name> 'recipe[webserver]'
      ```
+
+    - Replace `<node_name>` with the name of your Chef Node.
 
      ![WSNode](images/WS%20Node.png)
 
     - You can also manually add the `webserver` to the run list by following the below steps
 
-      1. - Go to [Manage Chef](https://manage.chef.io) in your web browser.
+      1. Go to [Manage Chef](https://manage.chef.io) in your web browser.
+
       2. Click on settings and edit Run List
       
       ![WSSettings](images/WS%20settings.png)
@@ -140,23 +157,21 @@ Setting up and configuring web servers manually on each server can be time-consu
 
       ![DropTo](images/DropTo.png)
 
-      4. Click on Save Run List
+      4. Click on `Save Run List`
 
 2. **Execute the Recipe on the Node**:
+
    - SSH into your Chef Node, and run `chef-client` to apply the recipe:
+
      ```bash
      sudo chef-client
      ```
 
     ![SudoWS](images/Sudo%20WS.png)
 
-    ![SudoWS1](images/Sudo%20WS1.png) 
-
 3. **Verify Apache Web Server**:
-   - Open a web browser and navigate to `http://<node-ip>`. You should see the message:
-     ```
-     Hello, Apache is configured by Chef!
-     ```
+
+   - Open a web browser and navigate to `http://<node-ip>`. You should see the message "`Welcome to Chef-managed Web Server!`".
 
      ![webpage](images/WS%20webpage.png)
 

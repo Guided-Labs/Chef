@@ -24,6 +24,8 @@ Manually managing cloud resources can lead to inconsistencies and errors. Automa
 
 ## **Prerequisites**
 ---
+Completion of all previous lab guides (up to Lab Guide-07) is required before proceeding with Lab Guide-08.
+
 ### **Software Required**
 - **Chef Workstation**: For creating and running provisioning recipes.
 - **Cloud SDKs/CLI**: Required for the cloud provider being used (e.g., AWS CLI for AWS).

@@ -25,6 +25,8 @@ Testing Chef cookbooks in real environments can be time-consuming and error-pron
 
 ## **Prerequisites**
 ---
+Completion of all previous lab guides (up to Lab Guide-05) is required before proceeding with Lab Guide-06.
+
 ### **Software Required**
 - **Chef Workstation**: To create, test, and manage cookbooks.
 - **Virtualization Software**: Vagrant or Docker for local testing (recommended).
@@ -45,7 +47,7 @@ Testing Chef cookbooks in real environments can be time-consuming and error-pron
      inspec version
      ```
 
-     ![chefVersion1](images/Chef%20version1.png)
+     ![chefVersion1](images/InspecVersion.png)
 
      ![InspecVersion](images/Inspec%20version.png)
 
@@ -59,12 +61,13 @@ Testing Chef cookbooks in real environments can be time-consuming and error-pron
 
      ![KitchenInit](images/KitchenInit.png)
 
-   - This command creates a `.kitchen.yml` file in your cookbook directory, which defines how Test Kitchen will set up and test your environment.
+   - This command creates a `kitchen.yml` file in your cookbook directory, which defines how Test Kitchen will set up and test your environment.
 
-2. **Edit `.kitchen.yml`**:
-   - Open the `.kitchen.yml` file and configure it to use the appropriate driver and platform.
+2. **Edit `kitchen.yml`**:
+   - Open the `kitchen.yml` file and configure it to use the appropriate driver and platform.
    - For example, to use Docker as a test platform:
      ```yaml
+     ---
      driver:
        name: vagrant
 

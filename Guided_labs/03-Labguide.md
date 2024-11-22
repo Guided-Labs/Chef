@@ -8,7 +8,8 @@
 * [**Implementation Steps**](#implementation-steps) 
   - [**Step-1: Create a Chef Role**](#step-1-create-a-chef-role) 
   - [**Step-2: Define Configurations for Different Environments**](#step-2-define-configurations-for-different-environments) 
-  - [**Step-3: Assign Roles to Nodes**](#step-3-assign-roles-to-nodes) 
+  - [**Step-3: Create Environment-Specific Recipes**](#step-3-create-environment-specific-recipes) 
+  - [**Step-4: Assign Roles to Nodes**](#step-4-assign-roles-to-nodes) 
 * [**References**](#references)
 
 ## **Description**
@@ -21,6 +22,8 @@ When managing servers across different environments, it’s essential to ensure 
 
 ## **Prerequisites**
 ---
+Completion of all previous lab guides (up to Lab Guide-02) is required before proceeding with Lab Guide-03.
+
 ### **Software Required**
 - **Chef Workstation**: To create and manage roles.
 - **Chef Server**: To store and manage roles and node configurations.
@@ -43,6 +46,15 @@ When managing servers across different environments, it’s essential to ensure 
 
 2. **Create a Role File**:
    - Create a new file using VScode or any other IDE called `webserver_dev.json` for the Development environment role:
+
+   - Command to create the file using code command:
+
+      ```bash
+      code webserver_dev.json
+      ```
+
+    - Add the following content to the `webserver_dev.json` file:
+
      ```json
      {
        "name": "webserver_dev",
@@ -81,14 +93,20 @@ When managing servers across different environments, it’s essential to ensure 
 ### **Step-2: Define Configurations for Different Environments**
 
 1. **Create Environment Files**:
-   - Go to the `environments` directory in `chef-repo`, and create files for each environment, for example, `development.json`:
+   - Create a folder called `environments` in the `chef-repo` directory and cd into it and create files for each environment, for example, `development.json` use code command to create the file:
+
+     ```bash
+     code development.json
+     ```
+
+    - Add the following content to the `development.json` file:
    
      ```json
      {
        "name": "development",
        "description": "Development environment configuration",
        "cookbook_versions": {
-         "webserver": ">= 0.0.0"
+         "webserver": ">= 0.1.0"
        },
        "default_attributes": {
          "apache": {
@@ -98,22 +116,64 @@ When managing servers across different environments, it’s essential to ensure 
      }
      ```
 
+     - Make sure to change the `webserver version` as per your cookbook version.
+
 2. **Upload the Environment Configuration**:
 
-   - open cmd from the environments folder
+   - cd to environments folder.
+
    - Upload each environment file to the Chef Server:
+
      ```bash
      knife environment from file development.json
      ```
 
      ![EnvFolder](images/Env%20Folder.png)
 
-### **Step-3: Assign Roles to Nodes**
+### **Step-3: Create Environment-Specific Recipes**
 
->Note: cd to roles
+1. **Create `dev.rb` Recipe**:
+   - Navigate to the `recipes` folder in the `webserver` cookbook:
+
+     ```bash
+     cd ~/chef-repo/cookbooks/webserver/recipes
+     ```
+
+   - Create using `code dev.rb` command:
+
+     ```bash
+     code dev.rb
+     ```  
+
+   - Add the following content to the `dev.rb` recipe file:
+
+    ```ruby
+    # recipes/dev.rb
+ 
+    package 'apache2' do
+      action :install
+    end
+ 
+    service 'apache2' do
+      action [:enable, :start]
+    end
+ 
+    file '/var/www/html/index.html' do
+      content '<h1>Welcome to Chef-managed Web Server!</h1>'
+      action :create
+    end
+    ```
+
+   - This recipe creates an `index.html` file with a welcome message for the Development environment.
+
+### **Step-4: Assign Roles to Nodes**
+
+> Note: cd to roles
 
 
 1. **Assign a Role to a Node**:
+
+   - cd to `roles` folder.
    - Use the `knife` command to assign the `webserver_dev` role to a specific node in the **Development** environment:
      ```bash
      knife node run_list add <node_name> "role[webserver_dev]"
@@ -122,6 +182,8 @@ When managing servers across different environments, it’s essential to ensure 
      ![NodeRoles](images/Node%20Roles.png)
 
 2. **Set the Environment for the Node**:
+
+   - Run the command from `chef-repo` directory.
    - Assign the environment to the node to ensure it picks up environment-specific settings:
      ```bash
      knife node environment set <node_name> development

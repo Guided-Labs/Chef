@@ -7,9 +7,10 @@
 * [**Prerequisites**](#prerequisites)
 * [**Implementation Steps**](#implementation-steps) 
   - [**Step-1: Create a Chef Cookbook**](#step-1-create-a-chef-cookbook) 
-  - [**Step-2: Define Recipes for Complex Configurations**](#step-2-define-recipes-for-complex-configurations) 
-  - [**Step-3: Use Attributes to Parameterize Configurations**](#step-3-use-attributes-to-parameterize-configurations) 
-  - [**Step-4: Test and Deploy the Cookbook**](#step-4-test-and-deploy-the-cookbook)
+  - [**Step-2: Use Attributes to Parameterize Configurations**](#step-2-use-attributes-to-parameterize-configurations) 
+  - [**Step-3: Create the Required Template Directory and File**](#step-3-create-the-required-template-directory-and-file)
+  - [**Step-4: Define Recipes for Complex Configurations**](#step-4-define-recipes-for-complex-configurations) 
+  - [**Step-5: Test and Deploy the Cookbook**](#step-5-test-and-deploy-the-cookbook)
 * [**References**](#references)
 
 ## **Description**
@@ -18,6 +19,8 @@ Chef **Cookbooks** are collections of recipes and configurations used to manage 
 
 ## **Problem Statement**
 ---
+Completion of all previous lab guides (up to Lab Guide-04) is required before proceeding with Lab Guide-05.
+
 When managing complex environments with multiple configuration requirements, itâ€™s essential to use **cookbooks** to organize reusable, modular recipes. By leveraging Chef cookbooks, you can:
 - **Centralize configuration management** for various environments.
 - **Reuse and version configurations** to avoid redundant coding.
@@ -55,14 +58,70 @@ When managing complex environments with multiple configuration requirements, itâ
    ```
 
 3. **Organize the Folder Structure**:
-   - Use the `recipes` directory for configuration tasks, `attributes` for parameter values, and `templates` for any dynamic files you need for configuration.
+
+   - In `my_webserver` directory create the following folders:
+     - `attributes`: To store parameter values.
+     - `templates`: To store dynamic files used in configurations.
 
    ![FolderStructure](images/FolderStructure.png)
 
-### **Step-2: Define Recipes for Complex Configurations**
+### **Step-2: Use Attributes to Parameterize Configurations**
+
+1. **Define Attributes**:
+
+   - Attributes are the key components for dynamically configuring cookbooks. Attributes enable the authors to make the cookbook configurable. By overriding default values set in cookbooks, the user can inject their own values.
+   - Set default values for parameters in the `attributes/default.rb` file. For example, to define the web serverâ€™s port:
+   - create a file `attributes/default.rb` and add the following line:
+
+     ```ruby
+     default['my_webserver']['port'] = 80
+     ```
+
+     ![Attributes](images/Attributes.png)
+
+2. **Use Attributes in Recipes**:
+
+   - Reference these attributes in your recipes to parameterize configurations:
+
+     ```ruby
+     template '/etc/apache2/ports.conf' do
+       source 'ports.conf.erb'
+       variables(port: node['my_webserver']['port'])
+     end
+     ```
+
+     ![Myweb_config](images/My_webConfig.png)
+
+3. **Override Attributes for Different Environments**:
+   - In production or other environments, you can override attributes by setting values in environment-specific files or roles, allowing you to manage configurations across environments.
+
+### **Step-3: Create the Required Template Directory and File**
+
+1. **Create the Template Directory and File**:
+
+   - Ensure the `templates/default` directory exists and create the `ports.conf.erb` file:
+
+     ```bash
+     mkdir -p templates/default
+     touch templates/default/ports.conf.erb
+     ```
+
+   2. **Edit the `ports.conf.erb` File**:
+
+      - Add the necessary configuration for Apache's `ports.conf` file:
+
+        ```erb
+        Listen <%= @port %>
+        ```
+
+      ![Myweb_ports](images/template.png)
+
+### **Step-4: Define Recipes for Complex Configurations**
 
 1. **Create a Recipe to Install Web Server**:
+
    - Add a recipe to install and configure a web server in `recipes/default.rb`:
+
     ```ruby
     # recipes/default.rb
     package 'apache2' do
@@ -87,36 +146,11 @@ When managing complex environments with multiple configuration requirements, itâ
 
     ![Mywebserver_config1](images/Mywebserver_config1.png)
 
-### **Step-3: Use Attributes to Parameterize Configurations**
-
-1. **Define Attributes**:
-   - Attributes are the key components for dynamically configuring cookbooks. Attributes enable the authors to make the cookbook configurable. By overriding default values set in cookbooks, the user can inject their own values.
-   - Set default values for parameters in the `attributes/default.rb` file. For example, to define the web serverâ€™s port:
-
-     ```ruby
-     default['my_webserver']['port'] = 80
-     ```
-
-     ![Attributes](images/Attributes.png)
-
-2. **Use Attributes in Recipes**:
-   - Reference these attributes in your recipes to parameterize configurations:
-     ```ruby
-     template '/etc/apache2/ports.conf' do
-       source 'ports.conf.erb'
-       variables(port: node['my_webserver']['port'])
-     end
-     ```
-
-     ![Myweb_config](images/My_webConfig.png)
-
-3. **Override Attributes for Different Environments**:
-   - In production or other environments, you can override attributes by setting values in environment-specific files or roles, allowing you to manage configurations across environments.
-
-### **Step-4: Test and Deploy the Cookbook**
+### **Step-5: Test and Deploy the Cookbook**
 
 1. **Upload the Cookbook to Chef Server**:
    - Use `knife` to upload the cookbook to the Chef Server:
+   - make sure you are in the `cookbooks` directory and run the following command:
      ```bash
      knife cookbook upload my_webserver
      ```

@@ -25,6 +25,8 @@ Creating cookbooks from scratch for every new application or configuration can b
 
 ## **Prerequisites**
 ---
+Completion of all previous lab guides (up to Lab Guide-06) is required before proceeding with Lab Guide-07.
+
 ### **Software Required**
 - **Chef Workstation**: To download, modify, and apply cookbooks.
 - **Chef Server** or **Chef Client**: To upload and apply cookbooks in your environment.
@@ -57,6 +59,10 @@ Creating cookbooks from scratch for every new application or configuration can b
 
   - Extract the tar.gz file into cookbooks folder
 
+  ```bash
+  tar -xvf motd-0.6.0.tar.gz
+  ```
+
 **3. Verify Installation**
   - The cookbook will be downloaded to the `cookbooks` directory in your Chef repository. Verify the structure:
   ```bash
@@ -73,7 +79,7 @@ Creating cookbooks from scratch for every new application or configuration can b
      kitchen init
      ```
 
-**2. Edit `.kitchen.yml`:**  
+**2. Edit `kitchen.yml`:**  
    Update the file to include the **motd** cookbook:  
 
 ```yaml

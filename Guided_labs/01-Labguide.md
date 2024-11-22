@@ -65,12 +65,6 @@ In order to virtualize a 64 bit operating system, one must also be running a 64 
   ```
 
   ![VirtualboxInstall](images/VirtualBox%20Install.png)
-
-- Verify the installation by running the following command in cmd
-
-  ```bash
-  virtualbox --version
-  ```
   
 **2. Install Vagrant**
 
@@ -148,7 +142,9 @@ The starter kit should now be downloaded to your system, and you can proceed wit
 
 ### **Step-4: Generate your Cookbook**
 
-- cd to chef-start\chef-repo\cookbooks and open command promt
+- Unzip the starter kit to a directory of your choice.
+
+- Open the starter kit and navigate to the `chef-starter\chef-repo\cookbooks` directory. Then, open the command prompt.
 
 **1. Creating a Cookbook**
 
@@ -162,13 +158,15 @@ chef generate cookbook git_cookbook
 
 ![CreateCookbook](images/CreateCookbook.png)
 
+> Note: Make sure your git config is set up before running the above command
+
 **2. Configure kitchen.yam File for Node Configuration**
 
 - The `kitchen.yml` file is the main configuration file for **Test Kitchen**. It defines how to set up, run, and destroy instances for testing infrastructure code, primarily used for Chef cookbooks.
 
-- cd to chef-start\chef-repo\cookbooks\git_cookbook
+- cd to `chef-start\chef-repo\cookbooks\git_cookbook` 
 
-- Edit the `kitchen.yml` file
+- Edit the `kitchen.yml` file using a text editor and add the following configuration ( Note: Make sure to run the text editor as an administrator)
 
 ```yaml
 ---
@@ -202,16 +200,6 @@ kitchen list
 
 ![KitchenList](images/KitchenList.png)
 
-- Configure virtual machine boot timeout
-
-  - cd to C:\Users\Administrator\.vagrant.d\boxes\bento-VAGRANTSLASH-ubuntu-20.04\202407.23.0\amd64\virtualbox
-  - Add config.vm.boot_timeout = 600 to the `Vagrantfile`
-
-  ![AddTimeout](images/AddTimeout.png)
-
-
-  
-  
 
 ### **Step-5: Create your Node**
 
@@ -224,6 +212,26 @@ kitchen create default-ubuntu-2004
 ```
 
 ![CreateNode](images/CreateNode.png)
+
+> **Note: Configure virtual machine boot timeout**
+> 
+> - If creation fails, follow these steps:
+>
+>   - cd to `C:\Users\Administrator\.vagrant.d\boxes\bento-VAGRANTSLASH-ubuntu-20.04\202407.23.0\amd64\virtualbox`
+>
+>   - Add `config.vm.boot_timeout = 600` to the `Vagrantfile`
+>
+>   - Re-run the `kitchen create default-ubuntu-2004` command
+>
+> ![AddTimeout](images/AddTimeout.png)
+
+After Creating the node, you can verify the status of the node by running the following command
+
+```bash
+kitchen list
+``` 
+
+![NodeStatus](images/NodeCreatedStatus.png)
 
 **1. Setup Node**
 
@@ -252,7 +260,7 @@ kitchen create default-ubuntu-2004
 
 ### **Step-6: Change the Network Settings**
 
-- Open your Virtual box and click on `Network`
+- Open your Virtual box and click on your Node and go to settings and navigate to `Network`.
 
 ![NAT](images/NAT.png)
 
@@ -260,28 +268,20 @@ kitchen create default-ubuntu-2004
 
 ![BridgedAdapter](images/BridgedAdapter.png)
 
-- Change the Promiscuous Mode: `Allow All` and click on `ok`
+- Change the Promiscuous Mode: `Allow All` and click on `ok` in the advanced settings
 
 ![AllowAll](images/AllowALL.png)
 
 - Reboot your Node by stopping the system in virtual box and starting it again
 
-- Once the system is Running, click on Show and login to your system with the following credetials
+- Once the system is Running, click on `Show` and login to your system with the following credetials ( default credentials for vagrant box ) 
 
-  - username- vagrant
-  - password- vagrant
+  - username = `vagrant`
+  - password = `vagrant`
 
   ![UbuntuLogin](images/UbuntuLogin.png)
 
-- Run the folllowing command to install net-tools
-
-```bash 
-sudo apt install net-tools
-```
-
-![net-tools](images/net-tools.png)
-
-- Check the ipconfig of your Node and Note down the etho2 ip: inet <ipaddress>
+- Run the following command to check the ip address of your node in the terminal, note down the ip address for further use.
 
 ```bash
 ip a
@@ -291,12 +291,15 @@ ip a
 
 ### **Step-7: Connect Server to your Node**
 
-Run the following command to connect server to your node
->Note: Replace the ip address in the command with your respective ip address
+Run the following command to connect server to your node ( Note: replace the ip address with your respective ip address ) and cd to `chef-starter\chef-repo\cookbooks\`
+
+> Note: Replace the ip address in the command with your respective ip address
 
 ```bash
-knife bootstrap 172.19.4.155 -U vagrant -P vagrant --sudo -N chef-node
+knife bootstrap <ip_address>  -U vagrant -P vagrant --sudo -N chef-node
 ```
+
+> Replace `<ip_address>` with the ip address of your node.
 
 ![ConnectServer](images/ConnectServer.png)
 
@@ -305,6 +308,7 @@ knife bootstrap 172.19.4.155 -U vagrant -P vagrant --sudo -N chef-node
   1. Go to [Manage Chef](https://manage.chef.io) in your web browser.
   2. Click on your **Organization**.
   3. Click n **Nodes**.
+  4. You should see your node listed here with the name `chef-node`.
 
   ![VerifyNode](images/VerifyNode.png)
 

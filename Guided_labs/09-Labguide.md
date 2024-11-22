@@ -23,6 +23,8 @@ When managing multiple configurations or systems, it becomes difficult to mainta
 
 ## **Prerequisites**
 ---
+Completion of all previous lab guides (up to Lab Guide-08) is required before proceeding with Lab Guide-09.
+
 ### **Software Required**
 - **Chef Workstation**: To create and test the custom resource and recipe.
 - **Chef Infra Client**: To apply the configuration.
@@ -50,7 +52,7 @@ When managing multiple configurations or systems, it becomes difficult to mainta
 
    ```ruby
    # Custom Resource: webserver
-   provides :webservers
+   provides :webserver
 
    property :package_name, String, default: 'apache2'   # For installing the server
    property :doc_root, String, default: '/var/www/html'  # Default document root
